@@ -21,7 +21,7 @@ while run:
     if len(green_hex) ==1:green_hex = "0" + green_hex
     if len(blue_hex) ==1:blue_hex = "0" + blue_hex
     
-    print("#" + red_hex + green_hex + blue_hex)
+    # print("#" + red_hex + green_hex + blue_hex)
     screen.fill("#" + red_hex + green_hex + blue_hex)
     pygame.display.update()
     
@@ -56,7 +56,7 @@ while run:
         green -= 1
     
     # red coming in
-    if(blue == 255 and blue == 0 and red != 255):
+    if(blue == 255 and green == 0 and red != 255):
         red += 1
     #blue going out
     if(blue != 0 and red == 255 and green == 0):
