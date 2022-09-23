@@ -2,9 +2,9 @@ import pygame
 
 pygame.init()
 pygame.display.set_caption("CONWAY'S GAME OF LIFE")
-screen = pygame.display.set_mode((100, 100))
+screen = pygame.display.set_mode()
 clock = pygame.time.Clock()
-fps = 50
+fps = 200
 
 red = 255
 green = 0
