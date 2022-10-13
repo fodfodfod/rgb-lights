@@ -8,7 +8,9 @@ import time
 GPIO.setmode(GPIO.BOARD)
 GPIO.setup(7,GPIO.OUT)
 
+global brightness
 brightness = 0
+
 
 def brightness_controller_function():
     
