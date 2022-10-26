@@ -29,8 +29,9 @@ GPIO.setmode(GPIO.BOARD)
 GPIO.setup(red_port,GPIO.OUT)
 GPIO.setup(green_port,GPIO.OUT)
 GPIO.setup(blue_port,GPIO.OUT)
-run = True
+
 async def find_next_color():
+    print("finding next color")
     global red
     global blue
     global green
@@ -48,11 +49,9 @@ async def find_next_color():
 
     #green coming up
     if(red==255 and green != 255 and blue == 0):
-        print("green coming up")
         green += 1
     #red coming out
     if(green == 255 and red != 0 and blue == 0):
-        print("red going out")
         red -= 1
     
     #green == 255 and red == 0 blue != 255
@@ -71,11 +70,13 @@ async def find_next_color():
         blue -= 1
 
 async def update_display():
-    global port_list
-    port_list = []
-    global brightness_list
-    brightness_list = []
-
+    
+    port_list_in_progress = []
+    brightness_list_in_progress = []
+    global red
+    global blue
+    global green
+    # print(f"updating display with {red}, {green}, {blue}")
     red_copy = red
     blue_copy = blue
     green_copy=green
@@ -84,34 +85,39 @@ async def update_display():
 
         if(red_copy <= green_copy and red_copy<=blue_copy and red_copy < 300):
             
-            port_list.append(red_port)
+            port_list_in_progress.append(red_port)
             subtract_time = 0
-            for i in range(0, len(brightness_list)):
-                subtract_time += brightness_list[i]
+            for i in range(0, len(brightness_list_in_progress)):
+                subtract_time += brightness_list_in_progress[i]
             red_copy -= subtract_time
-            brightness_list.append(red_copy)
+            brightness_list_in_progress.append(red_copy)
             red_copy = 300
         
         if(green_copy <= red_copy and green_copy<=blue_copy and green_copy < 300):
             
-            port_list.append(green_port)
+            port_list_in_progress.append(green_port)
             subtract_time = 0
-            for i in range(0, len(brightness_list)):
-                subtract_time += brightness_list[i]
+            for i in range(0, len(brightness_list_in_progress)):
+                subtract_time += brightness_list_in_progress[i]
             green_copy-= subtract_time
-            brightness_list.append(green_copy)
+            brightness_list_in_progress.append(green_copy)
             green_copy = 300
         
         if(blue_copy <= green_copy and blue_copy<=red_copy and blue_copy < 300):
-            print("blue add")
-            port_list.append(blue_port)
+
+            port_list_in_progress.append(blue_port)
             subtract_time = 0
-            for i in range(0, len(brightness_list)):
-                subtract_time += brightness_list[i]
+            for i in range(0, len(brightness_list_in_progress)):
+                subtract_time += brightness_list_in_progress[i]
             blue_copy -= subtract_time
-            brightness_list.append(blue_copy)
+            brightness_list_in_progress.append(blue_copy)
             blue_copy = 300
+        global port_list
+        global brightness_list
+        port_list = port_list_in_progress
+        brightness_list = brightness_list_in_progress
 async def run_display():
+    print("display created")
     while True:
         GPIO.output(red_port, True)
         GPIO.output(green_port, True)
@@ -119,6 +125,7 @@ async def run_display():
 
         
         global brightness_list
+        print(str(brightness_list) + "hi")
         time.sleep(brightness_list[0]/flash_speed)
         GPIO.output(port_list[0], False)
         time.sleep(brightness_list[1]/flash_speed)
@@ -127,16 +134,34 @@ async def run_display():
         GPIO.output(port_list[2], False)        
 
 async def main():
-    find_next_color_task = asyncio.create_task(find_next_color())
-    await find_next_color_task
-
-    update_display_task = asyncio.create_task(update_display())
-    await update_display_task
-
+    # background_tasks = set()
     run_display_task = asyncio.create_task(run_display())
-    # await run_display_task
+    # background_tasks.add(run_display_task)
 
+    # await run_display()
+    
+    # print("pre sleep")
+    # await asyncio.sleep(1)
+    print("start loop")
+    while 1 == 1:
+        
+        find_next_color_task = asyncio.create_task(find_next_color())
+        await find_next_color_task
 
+        # asyncio.run(find_next_color())
+
+        # await find_next_color()
+
+        update_display_task = asyncio.create_task(update_display())
+        await update_display_task
+
+        # await update_display()
+        time.sleep(0.005)
+        
+        # print("done display")
+    await run_display_task
+
+asyncio.run(update_display())
 
 asyncio.run(main())
 
