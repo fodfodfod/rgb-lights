@@ -5,8 +5,8 @@ import time
 #time.sleep()
 
 
-red = 255
-green = 0
+red = 0
+green = 255
 blue = 0
 
 red_port = 7

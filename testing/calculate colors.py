@@ -1,41 +1,20 @@
-# from threading import Thread
-import RPi.GPIO as GPIO
 import time
-import asyncio
-
-#GPIO.output(7, True)
-#time.sleep()
-
-
-red = 255
-
-green = 0
-
-blue = 0
-
-
-
-brightness_list = []
-port_list = []
-
-
 red_port = 7
 green_port = 29
 blue_port = 31
 
-flash_speed = 10000
 
-GPIO.setmode(GPIO.BOARD)
-GPIO.setup(red_port,GPIO.OUT)
-GPIO.setup(green_port,GPIO.OUT)
-GPIO.setup(blue_port,GPIO.OUT)
 
-async def find_next_color():
-    print("finding next color")
-    global red
-    global blue
-    global green
-    
+red = 255
+green = 0
+blue = 0
+
+color_output = []
+
+while not (red == 255 and blue==1):
+    time.sleep(0.1)
+
+
     red_hex = hex(red)[2:]
     green_hex = hex(green)[2:]
     blue_hex = hex(blue)[2:]
@@ -44,9 +23,6 @@ async def find_next_color():
     if len(blue_hex) ==1:blue_hex = "0" + blue_hex
     
     print("#" + red_hex + green_hex + blue_hex)
-    
-    
-
     #green coming up
     if(red==255 and green != 255 and blue == 0):
         green += 1
@@ -69,13 +45,14 @@ async def find_next_color():
     if(blue != 0 and red == 255 and green == 0):
         blue -= 1
 
-async def update_display():
     
+
+
+
+
+        
     port_list_in_progress = []
     brightness_list_in_progress = []
-    global red
-    global blue
-    global green
     # print(f"updating display with {red}, {green}, {blue}")
     red_copy = red
     blue_copy = blue
@@ -112,57 +89,12 @@ async def update_display():
             blue_copy -= subtract_time
             brightness_list_in_progress.append(blue_copy)
             blue_copy = 300
-        global port_list
-        global brightness_list
-        port_list = port_list_in_progress
-        brightness_list = brightness_list_in_progress
-async def run_display():
-    print("display created")
-    while True:
-        GPIO.output(red_port, True)
-        GPIO.output(green_port, True)
-        GPIO.output(blue_port, True)
+    #maybe should be indented
+    port_list = port_list_in_progress
+    brightness_list = brightness_list_in_progress
 
-        
-        global brightness_list
-        print(str(brightness_list) + "hi")
-        time.sleep(brightness_list[0]/flash_speed)
-        GPIO.output(port_list[0], False)
-        time.sleep(brightness_list[1]/flash_speed)
-        GPIO.output(port_list[1], False)
-        time.sleep(brightness_list[2]/flash_speed)
-        GPIO.output(port_list[2], False)        
-
-async def main():
-    # background_tasks = set()
-    run_display_task = asyncio.create_task(run_display())
-    # background_tasks.add(run_display_task)
-
-    # await run_display()
-    
-    # print("pre sleep")
-    # await asyncio.sleep(1)
-    print("start loop")
-    while 1 == 1:
-        
-        find_next_color_task = asyncio.create_task(find_next_color())
-        await find_next_color_task
-
-        # asyncio.run(find_next_color())
-
-        # await find_next_color()
-
-        update_display_task = asyncio.create_task(update_display())
-        await update_display_task
-
-        # await update_display()
-        time.sleep(0.005)
-        
-        # print("done display")
-    await run_display_task
-
-asyncio.run(update_display())
-
-asyncio.run(main())
-
-GPIO.cleanup()
+    color_output.append({"value_list": brightness_list, "port_list": port_list})
+print(len(color_output))
+file = open("color-output.txt", "w")
+file.write("master_color = " + str(color_output))
+file.close()
