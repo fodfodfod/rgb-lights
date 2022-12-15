@@ -2,17 +2,18 @@ import time
 red_port = 7
 green_port = 29
 blue_port = 31
-
+delay_speed = 10
 
 
 red = 255
 green = 0
 blue = 0
+ds = 0
 
 color_output = []
 
 while not (red == 255 and blue==1):
-    # time.sleep(0.1)
+    #time.sleep(0.1)
 
 
     red_hex = hex(red)[2:]
@@ -23,11 +24,11 @@ while not (red == 255 and blue==1):
     if len(blue_hex) ==1:blue_hex = "0" + blue_hex
     
     print("#" + red_hex + green_hex + blue_hex)
-    #green coming up
-    if(red==255 and green != 255 and blue == 0):
+    #green coming up more slowly
+    if(red==255 and green != 255 and blue == 0 and ds==0):
         green += 1
-    #red coming out
-    if(green == 255 and red != 0 and blue == 0):
+    #red coming out more slowly
+    if(green == 255 and red != 0 and blue == 0 and ds==0):
         red -= 1
     
     #green == 255 and red == 0 blue != 255
@@ -45,6 +46,11 @@ while not (red == 255 and blue==1):
     if(blue != 0 and red == 255 and green == 0):
         blue -= 1
 
+    ds += 1
+    
+    if(ds == delay_speed):
+        ds = 0
+    
     
 
 

@@ -39,7 +39,7 @@ def run_display():
     
     print("display created")
     while True:
-        color_id = int(time.time()*50)%len(master_colors)
+        color_id = int(i/4)%len(master_colors)
         brightness_list = master_colors[color_id]["value_list"]
         port_list = master_colors[color_id]["port_list"]
 
