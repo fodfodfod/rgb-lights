@@ -22,7 +22,7 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 
-import main
+# import main
 
 # If modifying these scopes, delete the file token.json.
 SCOPES = ['https://www.googleapis.com/auth/calendar.readonly']
@@ -42,15 +42,15 @@ def main():
     if not creds:
         print("no creds")
 
-    if not creds.valid:
-        print("no creds valid")
+    # if not creds.valid:
+        # print("no creds valid")
     
     if not creds or not creds.valid:
         if creds and creds.expired and creds.refresh_token:
             creds.refresh(Request())
         else:
             flow = InstalledAppFlow.from_client_secrets_file(
-                'testing/credentials.json', SCOPES)
+                'credentials.json', SCOPES)
             creds = flow.run_local_server(port=0)
         # Save the credentials for the next run
         with open('token.json', 'w') as token:
@@ -75,8 +75,9 @@ def main():
         # Prints the start and name of the next 10 events
         for event in events:
             # print(event["start"])
-            if("Schedule" in event["summary"]):
+            if("Schedule" in event["summary"] or "schedule" in event["summary"]):
                 if(event["start"]["date"] == str(datetime.date.today())):
+                    print("there is school")
                     main.run_display()
                 # else:
                     # print("there is not school today, todays date: " + str(datetime.date.today()) + " the events date "+ event["start"]["date"])
