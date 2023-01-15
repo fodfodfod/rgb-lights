@@ -58,5 +58,5 @@ def run_display():
         i= i + 1
 
 
-run_display()
-GPIO.cleanup()
+# run_display()
+# GPIO.cleanup()
