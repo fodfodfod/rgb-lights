@@ -93,6 +93,7 @@ def main_function():
     except HttpError as error:
         print('An error occurred: %s' % error)
 
-
+print("this is calender.py")
 if __name__ == '__main__':
+    print("__name__ == '__main__'")
     main_function()
