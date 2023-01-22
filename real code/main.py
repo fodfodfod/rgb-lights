@@ -1,40 +1,41 @@
-# from threading import Thread
-import RPi.GPIO as GPIO
-import time
-import asyncio
-import master_color
-
-#GPIO.output(7, True)
-#time.sleep()
-
-
-master_colors = master_color.master_color
-
-red = 255
-
-green = 0
-
-blue = 0
-
-red_port = 7
-green_port = 29
-blue_port = 31
-
-
-
-brightness_list = []
-port_list = []
-
-
-
-flash_speed = 100000
-
-GPIO.setmode(GPIO.BOARD)
-GPIO.setup(red_port,GPIO.OUT)
-GPIO.setup(green_port,GPIO.OUT)
-GPIO.setup(blue_port,GPIO.OUT)
-
 def run_display():
+
+    # from threading import Thread
+    import RPi.GPIO as GPIO
+    import time
+    import asyncio
+    import master_color
+
+    #GPIO.output(7, True)
+    #time.sleep()
+
+
+    master_colors = master_color.master_color
+
+    red = 255
+
+    green = 0
+
+    blue = 0
+
+    red_port = 7
+    green_port = 29
+    blue_port = 31
+
+
+
+    brightness_list = []
+    port_list = []
+
+
+
+    flash_speed = 100000
+
+    GPIO.setmode(GPIO.BOARD)
+    GPIO.setup(red_port,GPIO.OUT)
+    GPIO.setup(green_port,GPIO.OUT)
+    GPIO.setup(blue_port,GPIO.OUT)
+
     i = 0
     
     print("display created")
