@@ -30,8 +30,8 @@ def get_events():
     if not creds:
         print("no creds")
 
-    if not creds.valid:
-        print("no creds valid")
+    #if not creds.valid:
+     #   print("no creds valid")
     
     if not creds or not creds.valid:
         if creds and creds.expired and creds.refresh_token:
