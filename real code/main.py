@@ -60,7 +60,8 @@ def run_display():
         time.sleep(brightness_list[2]/flash_speed)
         GPIO.output(port_list[2], False)
         i= i + 1
-        brightness_mult = brightness_mult + 0.01
+        if(brightness_mult < 1.0):
+            brightness_mult = brightness_mult + 0.01
 
 
 # run_display()
