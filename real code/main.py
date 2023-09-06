@@ -39,11 +39,12 @@ def run_display():
     GPIO.setup(blue_port,GPIO.OUT)
 
     i = 0
+    brightness_mult = 0.0
     
     print("display created")
     while True:
         color_id = int(time.time()*50)%len(master_colors)
-        brightness_list = master_colors[color_id]["value_list"]
+        brightness_list = map(lambda: x: x * brightness_mult, master_colors[color_id]["value_list"])
         port_list = master_colors[color_id]["port_list"]
 
 
@@ -59,6 +60,7 @@ def run_display():
         time.sleep(brightness_list[2]/flash_speed)
         GPIO.output(port_list[2], False)
         i= i + 1
+        brightness_mult = brightness_mult + 0.01
 
 
 # run_display()
