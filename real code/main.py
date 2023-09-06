@@ -44,7 +44,7 @@ def run_display():
     print("display created")
     while True:
         color_id = int(time.time()*50)%len(master_colors)
-        brightness_list = map(lambda x: x * brightness_mult, master_colors[color_id]["value_list"])
+        brightness_list = list(map(lambda x: x * brightness_mult, master_colors[color_id]["value_list"]))
         port_list = master_colors[color_id]["port_list"]
 
 
