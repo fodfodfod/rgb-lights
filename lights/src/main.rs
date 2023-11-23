@@ -1,23 +1,39 @@
 use std::cmp::Ordering;
-static red_port: i32 = 7;
-static green_port: i32 = 29;
-static blue_port: i32 = 31;
+use std::thread;
+use std::time;
+use gpio::GpioOut;
+use gpio::sysfs::SysFsGpioOutput;
+use unbothered_gpio::UnbotheredGpioPinWriter;
+
+static RED_PORT: u16 = 7;
+static GREEN_PORT: u16 = 29;
+static BLUE_PORT: u16 = 31;
+static TIME_CONSTANT: u64 = 1000;
+
+
 fn main() {
     println!("Hello, world!");
 
     let mut values: Color = Color::new();
-    
-    //tokio::spawn(async{ controller(&values)});
-
+    let mut red_pin = gpio::sysfs::SysFsGpioOutput::open(RED_PORT).unwrap();
+    let mut green_pin = gpio::sysfs::SysFsGpioOutput::open(GREEN_PORT).unwrap();
+    let mut blue_pin = gpio::sysfs::SysFsGpioOutput::open(BLUE_PORT).unwrap();
+    println!("hi again");
     loop{
         values.rainbow_cycle();
-        //values.print_color();
+        controller(&values, &mut red_pin, &mut green_pin, &mut blue_pin);
     }
-    //find_next_color(&mut values);
 }
 
-fn controller(color: &Color){
-    //turn on everything
+fn controller(color: &Color, red_pin: &mut SysFsGpioOutput, green_pin: &mut SysFsGpioOutput, blue_pin: &mut SysFsGpioOutput){
+    let red_port_number = RED_PORT;
+    let green_port_number = GREEN_PORT;
+    let blue_port_number = BLUE_PORT;
+
+
+    red_pin.set_high();
+    green_pin.set_high();
+    blue_pin.set_high();
     let mut list = color.convert_to_list(); 
     list.sort();
     let mut final_wait_time = 255;
@@ -25,17 +41,35 @@ fn controller(color: &Color){
 
     let wait_time = list.get(0).unwrap().intensity - list.get(1).unwrap().intensity - list.get(2).unwrap().intensity;
     final_wait_time -= wait_time;
-    list.remove(0);
+    thread::sleep(time::Duration::from_millis(wait_time as u64/TIME_CONSTANT)); 
+    match list.get(0).unwrap().port{
+        red_port_number => red_pin.set_low(),
+        green_port_number => green_pin.set_low(),
+        blue_port_number => blue_pin.set_low(),
+    }; 
     
-    //turn off
+    list.remove(0);
     let wait_time = list.get(0).unwrap().intensity - list.get(1).unwrap().intensity;
     final_wait_time -= wait_time;
+    thread::sleep(time::Duration::from_millis(wait_time as u64/TIME_CONSTANT)); 
+    match list.get(0).unwrap().port{
+        red_port_number => red_pin.set_low(),
+        green_port_number => green_pin.set_low(),
+        blue_port_number => blue_pin.set_low(),
+    }; 
+    
     list.remove(0);
-    //turn off
     let wait_time = list.get(0).unwrap().intensity;
     final_wait_time -= wait_time;
-    //turn off
+    thread::sleep(time::Duration::from_millis(wait_time as u64/TIME_CONSTANT)); 
+    
+    match list.get(0).unwrap().port{
+        red_port_number => red_pin.set_low(),
+        green_port_number => green_pin.set_low(),
+        blue_port_number => blue_pin.set_low(),
+    }; 
     let wait_time = final_wait_time;
+    thread::sleep(time::Duration::from_millis(wait_time as u64/TIME_CONSTANT)); 
     //
     //find next color
 }
@@ -43,7 +77,7 @@ fn controller(color: &Color){
 #[derive(Clone)]
 struct LED{
     intensity: u8,
-    port: i32
+    port: u16
 }
 
 impl Ord for LED{
@@ -71,7 +105,7 @@ struct Color{
 
 impl Color{
     fn new() -> Self {
-        Color { red: LED{ intensity: 255, port: red_port}, green: LED{ intensity: 0, port: green_port}, blue: LED { intensity: 0, port: blue_port}}
+        Color { red: LED{ intensity: 255, port: RED_PORT}, green: LED{ intensity: 0, port: GREEN_PORT}, blue: LED { intensity: 0, port: BLUE_PORT}}
     }
     pub fn rainbow_cycle(&mut self) {
         if self.red.intensity == 255 && self.green.intensity < 255 && self.blue.intensity == 0 {
@@ -93,11 +127,8 @@ impl Color{
             self.blue.intensity -= 1;
         }
     }
-    pub fn print_color(&self) {
-        //println!("Red: {}\nGreen: {}\nBlue: {}\n", self.red, self.green, self.blue);
-    }
     pub fn convert_to_list(&self) -> Vec<LED>{
         let list = vec![self.red, self.green, self.blue];
-        return list;
+        list
     }
 }
