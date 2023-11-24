@@ -19,10 +19,13 @@ fn main() {
     let mut green_pin = gpio::sysfs::SysFsGpioOutput::open(GREEN_PORT).unwrap();
     let mut blue_pin = gpio::sysfs::SysFsGpioOutput::open(BLUE_PORT).unwrap();
     println!("hi again");
-    loop{
-        values.rainbow_cycle();
-        controller(&values, &mut red_pin, &mut green_pin, &mut blue_pin);
-    }
+    red_pin.set_low();
+    green_pin.set_low();
+    blue_pin.set_low();
+//    loop{
+//        values.rainbow_cycle();
+//        controller(&values, &mut red_pin, &mut green_pin, &mut blue_pin);
+//    }
 }
 
 fn controller(color: &Color, red_pin: &mut SysFsGpioOutput, green_pin: &mut SysFsGpioOutput, blue_pin: &mut SysFsGpioOutput){
