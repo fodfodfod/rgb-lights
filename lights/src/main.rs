@@ -4,6 +4,7 @@ use std::time;
 use gpio::GpioOut;
 use gpio::sysfs::SysFsGpioOutput;
 use unbothered_gpio::UnbotheredGpioPinWriter;
+use rppal::gpio::Gpio;
 
 static RED_PORT: u16 = 7;
 static GREEN_PORT: u16 = 29;
@@ -15,9 +16,9 @@ fn main() {
     println!("Hello, world!");
 
     let mut values: Color = Color::new();
-    let mut red_pin = gpio::sysfs::SysFsGpioOutput::open(RED_PORT).unwrap();
-    let mut green_pin = gpio::sysfs::SysFsGpioOutput::open(GREEN_PORT).unwrap();
-    let mut blue_pin = gpio::sysfs::SysFsGpioOutput::open(BLUE_PORT).unwrap();
+    let mut red_pin = Gpio::new()?.get(RED_PORT)?.into_output();
+    let mut green_pin = Gpio::new()?.get(GREEN_PORT)?.into_output();
+    let mut blue_pin = Gpio::new()?.get(BLUE_PORT)?.into_output();
     println!("hi again");
     red_pin.set_high();
     green_pin.set_high();
