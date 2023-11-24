@@ -26,10 +26,6 @@ fn main() {
 }
 
 fn controller(color: &Color, red_pin: &mut SysFsGpioOutput, green_pin: &mut SysFsGpioOutput, blue_pin: &mut SysFsGpioOutput){
-    let red_port_number = RED_PORT;
-    let green_port_number = GREEN_PORT;
-    let blue_port_number = BLUE_PORT;
-
 
     red_pin.set_high();
     green_pin.set_high();
@@ -42,20 +38,20 @@ fn controller(color: &Color, red_pin: &mut SysFsGpioOutput, green_pin: &mut SysF
     let wait_time = list.get(0).unwrap().intensity - list.get(1).unwrap().intensity - list.get(2).unwrap().intensity;
     final_wait_time -= wait_time;
     thread::sleep(time::Duration::from_millis(wait_time as u64/TIME_CONSTANT)); 
-    match list.get(0).unwrap().port{
-        red_port_number => red_pin.set_low(),
-        green_port_number => green_pin.set_low(),
-        blue_port_number => blue_pin.set_low(),
+    match channel_to_enum(list.get(0).unwrap().port){
+        RGB::RED => red_pin.set_low(),
+        RGB::GREEN => green_pin.set_low(),
+        RGB::BLUE => blue_pin.set_low(),
     }; 
     
     list.remove(0);
     let wait_time = list.get(0).unwrap().intensity - list.get(1).unwrap().intensity;
     final_wait_time -= wait_time;
     thread::sleep(time::Duration::from_millis(wait_time as u64/TIME_CONSTANT)); 
-    match list.get(0).unwrap().port{
-        red_port_number => red_pin.set_low(),
-        green_port_number => green_pin.set_low(),
-        blue_port_number => blue_pin.set_low(),
+    match channel_to_enum(list.get(0).unwrap().port){
+        RGB::RED => red_pin.set_low(),
+        RGB::GREEN => green_pin.set_low(),
+        RGB::BLUE => blue_pin.set_low(),
     }; 
     
     list.remove(0);
@@ -63,16 +59,27 @@ fn controller(color: &Color, red_pin: &mut SysFsGpioOutput, green_pin: &mut SysF
     final_wait_time -= wait_time;
     thread::sleep(time::Duration::from_millis(wait_time as u64/TIME_CONSTANT)); 
     
-    match list.get(0).unwrap().port{
-        red_port_number => red_pin.set_low(),
-        green_port_number => green_pin.set_low(),
-        blue_port_number => blue_pin.set_low(),
+    match channel_to_enum(list.get(0).unwrap().port){
+        RGB::RED => red_pin.set_low(),
+        RGB::GREEN => green_pin.set_low(),
+        RGB::BLUE => blue_pin.set_low(),
     }; 
     let wait_time = final_wait_time;
     thread::sleep(time::Duration::from_millis(wait_time as u64/TIME_CONSTANT)); 
     //
     //find next color
 }
+
+fn channel_to_enum(channel: u16) -> RGB{
+    if channel == RED_PORT{
+        RGB::RED;
+    }
+    if channel == GREEN_PORT{
+        RGB::GREEN;
+    }
+    RGB::BLUE
+}
+
 #[derive(Copy)]
 #[derive(Clone)]
 struct LED{
@@ -96,6 +103,12 @@ impl PartialEq for LED{
     }
 }
 impl Eq for LED { }
+
+enum RGB {
+    RED,
+    GREEN,
+    BLUE
+}
 
 struct Color{
     red: LED,
