@@ -76,12 +76,12 @@ fn controller(color: &Color, red_pin: &mut SysFsGpioOutput, green_pin: &mut SysF
 
 fn channel_to_enum(channel: u8) -> RGB{
     if channel == RED_PORT{
-        RGB::RED;
+        return RGB::RED;
     }
     if channel == GREEN_PORT{
-        RGB::GREEN;
+        return RGB::GREEN;
     }
-    RGB::BLUE
+    return RGB::BLUE;
 }
 
 #[derive(Copy)]
