@@ -31,6 +31,7 @@ fn main() {
 
 fn controller(color: &Color, red_pin: &mut rppal::gpio::OutputPin, green_pin: &mut rppal::gpio::OutputPin, blue_pin: &mut rppal::gpio::OutputPin){
 
+    println!("red: {}, green: {}, blue: {}", color.red.intensity, color.green.intensity, color.blue.intensity);
     red_pin.set_high();
     green_pin.set_high();
     blue_pin.set_high();
