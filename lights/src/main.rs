@@ -29,7 +29,7 @@ fn main() {
     }
 }
 
-fn controller(color: &Color, red_pin: &mut Gpio::OutputPin, green_pin: &mut Gpio::OutputPin, blue_pin: &mut Gpio::OutputPin){
+fn controller(color: &Color, red_pin: &mut rppal::gpio::Gpio::OutputPin, green_pin: &mut rppal::gpio::Gpio::OutputPin, blue_pin: &mut rppal::gpio::Gpio::OutputPin){
 
     red_pin.set_high();
     green_pin.set_high();
