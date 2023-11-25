@@ -29,7 +29,7 @@ fn main() {
     }
 }
 
-fn controller(color: &Color, red_pin: &mut SysFsGpioOutput, green_pin: &mut SysFsGpioOutput, blue_pin: &mut SysFsGpioOutput){
+fn controller(color: &Color, red_pin: &mut OutputPin, green_pin: &mut OutputPin, blue_pin: &mut OutputPin){
 
     red_pin.set_high();
     green_pin.set_high();
