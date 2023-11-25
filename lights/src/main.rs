@@ -47,30 +47,29 @@ fn controller(color: &Color, red_pin: &mut rppal::gpio::OutputPin, green_pin: &m
     blue_pin.set_high();
     let mut list = color.convert_to_list(); 
     list.sort();
+    //list.reverse();
     let mut final_wait_time = 255;
     
 
-    let wait_time = list.get(0).unwrap().intensity - list.get(1).unwrap().intensity - list.get(2).unwrap().intensity;
-    final_wait_time -= wait_time;
-    thread::sleep(time::Duration::from_millis(wait_time as u64/TIME_CONSTANT)); 
-    match channel_to_enum(list.get(0).unwrap().port){
-        RGB::RED => red_pin.set_low(),
-        RGB::GREEN => green_pin.set_low(),
-        RGB::BLUE => blue_pin.set_low(),
-    }; 
-    
-    list.remove(0);
-    let wait_time = list.get(0).unwrap().intensity - list.get(1).unwrap().intensity;
-    final_wait_time -= wait_time;
-    thread::sleep(time::Duration::from_millis(wait_time as u64/TIME_CONSTANT)); 
-    match channel_to_enum(list.get(0).unwrap().port){
-        RGB::RED => red_pin.set_low(),
-        RGB::GREEN => green_pin.set_low(),
-        RGB::BLUE => blue_pin.set_low(),
-    }; 
-    
-    list.remove(0);
     let wait_time = list.get(0).unwrap().intensity;
+    final_wait_time -= wait_time;
+    thread::sleep(time::Duration::from_millis(wait_time as u64/TIME_CONSTANT)); 
+    match channel_to_enum(list.get(0).unwrap().port){
+        RGB::RED => red_pin.set_low(),
+        RGB::GREEN => green_pin.set_low(),
+        RGB::BLUE => blue_pin.set_low(),
+    }; 
+    
+    let wait_time = list.get(1).unwrap().intensity - list.get(0).unwrap().intensity;
+    final_wait_time -= wait_time;
+    thread::sleep(time::Duration::from_millis(wait_time as u64/TIME_CONSTANT)); 
+    match channel_to_enum(list.get(0).unwrap().port){
+        RGB::RED => red_pin.set_low(),
+        RGB::GREEN => green_pin.set_low(),
+        RGB::BLUE => blue_pin.set_low(),
+    }; 
+    
+    let wait_time = list.get(2).unwrap().intensity - list.get(1).unwrap().intensity - list.get(0).unwrap().intensity;
     final_wait_time -= wait_time;
     thread::sleep(time::Duration::from_millis(wait_time as u64/TIME_CONSTANT)); 
     
