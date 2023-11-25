@@ -16,9 +16,9 @@ fn main() {
     println!("Hello, world!");
 
     let mut values: Color = Color::new();
-    let mut red_pin = Gpio::new().unwrap().get(RED_PORT).into_output();
-    let mut green_pin = Gpio::new().unwrap().get(GREEN_PORT).into_output();
-    let mut blue_pin = Gpio::new().unwrap().get(BLUE_PORT).into_output();
+    let mut red_pin = Gpio::new().unwrap().get(RED_PORT).unwrap().into_output();
+    let mut green_pin = Gpio::new().unwrap().get(GREEN_PORT).unwrap().into_output();
+    let mut blue_pin = Gpio::new().unwrap().get(BLUE_PORT).unwrap().into_output();
     println!("hi again");
     red_pin.set_high();
     green_pin.set_high();
