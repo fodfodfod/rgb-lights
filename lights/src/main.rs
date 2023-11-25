@@ -26,6 +26,16 @@ fn main() {
     loop{
         values.rainbow_cycle();
         controller(&values, &mut red_pin, &mut green_pin, &mut blue_pin);
+        controller(&values, &mut red_pin, &mut green_pin, &mut blue_pin);
+        controller(&values, &mut red_pin, &mut green_pin, &mut blue_pin);
+        controller(&values, &mut red_pin, &mut green_pin, &mut blue_pin);
+        controller(&values, &mut red_pin, &mut green_pin, &mut blue_pin);
+        controller(&values, &mut red_pin, &mut green_pin, &mut blue_pin);
+        controller(&values, &mut red_pin, &mut green_pin, &mut blue_pin);
+        controller(&values, &mut red_pin, &mut green_pin, &mut blue_pin);
+        controller(&values, &mut red_pin, &mut green_pin, &mut blue_pin);
+        controller(&values, &mut red_pin, &mut green_pin, &mut blue_pin);
+        controller(&values, &mut red_pin, &mut green_pin, &mut blue_pin);
     }
 }
 
