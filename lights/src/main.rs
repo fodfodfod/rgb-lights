@@ -6,9 +6,9 @@ use gpio::sysfs::SysFsGpioOutput;
 use unbothered_gpio::UnbotheredGpioPinWriter;
 use rppal::gpio::Gpio;
 
-static RED_PORT: u8 = 7;
-static GREEN_PORT: u8 = 29;
-static BLUE_PORT: u8 = 31;
+static RED_PORT: u8 = 4;
+static GREEN_PORT: u8 = 5;
+static BLUE_PORT: u8 = 6;
 static TIME_CONSTANT: u64 = 1000;
 
 
@@ -20,13 +20,13 @@ fn main() {
     let mut green_pin = Gpio::new().unwrap().get(GREEN_PORT).unwrap().into_output();
     let mut blue_pin = Gpio::new().unwrap().get(BLUE_PORT).unwrap().into_output();
     println!("hi again");
-    red_pin.set_high();
-    green_pin.set_high();
-    blue_pin.set_high();
-//    loop{
-//        values.rainbow_cycle();
-//        controller(&values, &mut red_pin, &mut green_pin, &mut blue_pin);
-//    }
+    //red_pin.set_high();
+    //green_pin.set_high();
+    //blue_pin.set_high();
+    loop{
+        values.rainbow_cycle();
+        controller(&values, &mut red_pin, &mut green_pin, &mut blue_pin);
+    }
 }
 
 fn controller(color: &Color, red_pin: &mut SysFsGpioOutput, green_pin: &mut SysFsGpioOutput, blue_pin: &mut SysFsGpioOutput){
