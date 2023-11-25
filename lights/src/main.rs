@@ -6,9 +6,9 @@ use gpio::sysfs::SysFsGpioOutput;
 use unbothered_gpio::UnbotheredGpioPinWriter;
 use rppal::gpio::Gpio;
 
-static RED_PORT: u16 = 7;
-static GREEN_PORT: u16 = 29;
-static BLUE_PORT: u16 = 31;
+static RED_PORT: u8 = 7;
+static GREEN_PORT: u8 = 29;
+static BLUE_PORT: u8 = 31;
 static TIME_CONSTANT: u64 = 1000;
 
 
@@ -16,9 +16,9 @@ fn main() {
     println!("Hello, world!");
 
     let mut values: Color = Color::new();
-    let mut red_pin = Gpio::new()?.get(RED_PORT)?.into_output();
-    let mut green_pin = Gpio::new()?.get(GREEN_PORT)?.into_output();
-    let mut blue_pin = Gpio::new()?.get(BLUE_PORT)?.into_output();
+    let mut red_pin = Gpio::new().get(RED_PORT).into_output();
+    let mut green_pin = Gpio::new().get(GREEN_PORT).into_output();
+    let mut blue_pin = Gpio::new().get(BLUE_PORT).into_output();
     println!("hi again");
     red_pin.set_high();
     green_pin.set_high();
@@ -74,7 +74,7 @@ fn controller(color: &Color, red_pin: &mut SysFsGpioOutput, green_pin: &mut SysF
     //find next color
 }
 
-fn channel_to_enum(channel: u16) -> RGB{
+fn channel_to_enum(channel: u8) -> RGB{
     if channel == RED_PORT{
         RGB::RED;
     }
@@ -88,7 +88,7 @@ fn channel_to_enum(channel: u16) -> RGB{
 #[derive(Clone)]
 struct LED{
     intensity: u8,
-    port: u16
+    port: u8
 }
 
 impl Ord for LED{
