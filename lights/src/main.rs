@@ -25,14 +25,6 @@ fn main() {
         controller(&values, &mut red_pin, &mut green_pin, &mut blue_pin);
         controller(&values, &mut red_pin, &mut green_pin, &mut blue_pin);
         controller(&values, &mut red_pin, &mut green_pin, &mut blue_pin);
-        controller(&values, &mut red_pin, &mut green_pin, &mut blue_pin);
-        controller(&values, &mut red_pin, &mut green_pin, &mut blue_pin);
-        controller(&values, &mut red_pin, &mut green_pin, &mut blue_pin);
-        controller(&values, &mut red_pin, &mut green_pin, &mut blue_pin);
-        controller(&values, &mut red_pin, &mut green_pin, &mut blue_pin);
-        controller(&values, &mut red_pin, &mut green_pin, &mut blue_pin);
-        controller(&values, &mut red_pin, &mut green_pin, &mut blue_pin);
-        controller(&values, &mut red_pin, &mut green_pin, &mut blue_pin);
     }
 }
 
@@ -75,6 +67,7 @@ fn controller(color: &Color, red_pin: &mut rppal::gpio::OutputPin, green_pin: &m
         RGB::BLUE => blue_pin.set_low(),
     }; 
     let wait_time = final_wait_time;
+    let wait_time = 255 - list.get(2).unwrap().intensity - list.get(1).unwrap().intensity - list.get(0).unwrap().intensity;
     thread::sleep(time::Duration::from_millis((wait_time as f64*TIME_CONSTANT)as u64)); 
     //
 }
