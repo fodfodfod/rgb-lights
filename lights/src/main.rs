@@ -49,7 +49,7 @@ fn controller(color: &Color, red_pin: &mut rppal::gpio::OutputPin, green_pin: &m
 
     let wait_time = list.get(0).unwrap().intensity;
     final_wait_time -= wait_time;
-    thread::sleep(time::Duration::from_millis(wait_time as f64*TIME_CONSTANT)); 
+    thread::sleep(time::Duration::from_millis((wait_time as f64*TIME_CONSTANT)as u64)); 
     match channel_to_enum(list.get(0).unwrap().port){
         RGB::RED => red_pin.set_low(),
         RGB::GREEN => green_pin.set_low(),
@@ -58,7 +58,7 @@ fn controller(color: &Color, red_pin: &mut rppal::gpio::OutputPin, green_pin: &m
     
     let wait_time = list.get(1).unwrap().intensity - list.get(0).unwrap().intensity;
     final_wait_time -= wait_time;
-    thread::sleep(time::Duration::from_millis(wait_time as f64*TIME_CONSTANT)); 
+    thread::sleep(time::Duration::from_millis((wait_time as f64*TIME_CONSTANT)as u64)); 
     match channel_to_enum(list.get(1).unwrap().port){
         RGB::RED => red_pin.set_low(),
         RGB::GREEN => green_pin.set_low(),
@@ -67,7 +67,7 @@ fn controller(color: &Color, red_pin: &mut rppal::gpio::OutputPin, green_pin: &m
     
     let wait_time = list.get(2).unwrap().intensity - list.get(1).unwrap().intensity - list.get(0).unwrap().intensity;
     final_wait_time -= wait_time;
-    thread::sleep(time::Duration::from_millis(wait_time as f64*TIME_CONSTANT)); 
+    thread::sleep(time::Duration::from_millis((wait_time as f64*TIME_CONSTANT)as u64)); 
     
     match channel_to_enum(list.get(2).unwrap().port){
         RGB::RED => red_pin.set_low(),
