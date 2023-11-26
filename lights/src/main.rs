@@ -75,7 +75,7 @@ fn controller(color: &Color, red_pin: &mut rppal::gpio::OutputPin, green_pin: &m
         RGB::BLUE => blue_pin.set_low(),
     }; 
     let wait_time = final_wait_time;
-    thread::sleep(time::Duration::from_millis(wait_time as u64*TIME_CONSTANT)); 
+    thread::sleep(time::Duration::from_millis((wait_time as f64*TIME_CONSTANT)as u64)); 
     //
 }
 
