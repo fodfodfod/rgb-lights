@@ -10,3 +10,4 @@ edition = "2021"
 gpio = "0.4.1"
 unbothered-gpio = "0.1.0"
 rppal = "0.15.0"
+
