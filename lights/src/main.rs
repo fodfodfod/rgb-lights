@@ -42,7 +42,7 @@ fn controller(color: &Color, red_pin: &mut rppal::gpio::OutputPin, green_pin: &m
     let wait_time = list.get(0).unwrap().intensity;
     final_wait_time -= wait_time;
     thread::sleep(time::Duration::from_millis((wait_time as f64*TIME_CONSTANT)as u64)); 
-    match channel_to_enum(list.get(0).unwrap().port){
+    match channel_to_enum(list[0].port){
         RGB::RED => red_pin.set_low(),
         RGB::GREEN => green_pin.set_low(),
         RGB::BLUE => blue_pin.set_low(),
@@ -51,7 +51,7 @@ fn controller(color: &Color, red_pin: &mut rppal::gpio::OutputPin, green_pin: &m
     let wait_time = list.get(1).unwrap().intensity - list.get(0).unwrap().intensity;
     final_wait_time -= wait_time;
     thread::sleep(time::Duration::from_millis((wait_time as f64*TIME_CONSTANT)as u64)); 
-    match channel_to_enum(list.get(1).unwrap().port){
+    match channel_to_enum(list[1].port){
         RGB::RED => red_pin.set_low(),
         RGB::GREEN => green_pin.set_low(),
         RGB::BLUE => blue_pin.set_low(),
@@ -61,7 +61,7 @@ fn controller(color: &Color, red_pin: &mut rppal::gpio::OutputPin, green_pin: &m
     final_wait_time -= wait_time;
     thread::sleep(time::Duration::from_millis((wait_time as f64*TIME_CONSTANT)as u64)); 
     
-    match channel_to_enum(list.get(2).unwrap().port){
+    match channel_to_enum(list[2].port){
         RGB::RED => red_pin.set_low(),
         RGB::GREEN => green_pin.set_low(),
         RGB::BLUE => blue_pin.set_low(),
@@ -142,8 +142,8 @@ impl Color{
             self.blue.intensity -= 1;
         }
     }
-    pub fn convert_to_list(&self) -> Vec<LED>{
-        let list = vec![self.red, self.green, self.blue];
+    pub fn convert_to_list(&self) -> [LED; 3]{
+        let list = [self.red, self.green, self.blue];
         list
     }
 }
