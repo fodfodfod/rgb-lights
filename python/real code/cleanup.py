@@ -13,5 +13,5 @@ GPIO.setup(green_port,GPIO.OUT)
 GPIO.setup(blue_port,GPIO.OUT)
 
 GPIO.cleanup()
-os.system("pkill -9 python3")
+os.system("pkill -9 lights")
 

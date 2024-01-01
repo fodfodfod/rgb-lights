@@ -6,7 +6,7 @@ use rppal::gpio::Gpio;
 static RED_PORT: u8 = 4;
 static GREEN_PORT: u8 = 5;
 static BLUE_PORT: u8 = 6;
-static TIME_CONSTANT: f64 = 0.001;
+static TIME_CONSTANT: f64 = 1.0;
 
 
 fn main() {
@@ -25,6 +25,17 @@ fn main() {
         controller(&values, &mut red_pin, &mut green_pin, &mut blue_pin);
         controller(&values, &mut red_pin, &mut green_pin, &mut blue_pin);
         controller(&values, &mut red_pin, &mut green_pin, &mut blue_pin);
+        controller(&values, &mut red_pin, &mut green_pin, &mut blue_pin);
+        controller(&values, &mut red_pin, &mut green_pin, &mut blue_pin);
+        controller(&values, &mut red_pin, &mut green_pin, &mut blue_pin);
+        controller(&values, &mut red_pin, &mut green_pin, &mut blue_pin);
+        controller(&values, &mut red_pin, &mut green_pin, &mut blue_pin);
+        controller(&values, &mut red_pin, &mut green_pin, &mut blue_pin);
+        controller(&values, &mut red_pin, &mut green_pin, &mut blue_pin);
+        controller(&values, &mut red_pin, &mut green_pin, &mut blue_pin);
+        controller(&values, &mut red_pin, &mut green_pin, &mut blue_pin);
+        controller(&values, &mut red_pin, &mut green_pin, &mut blue_pin);
+        controller(&values, &mut red_pin, &mut green_pin, &mut blue_pin);
     }
 }
 
@@ -36,12 +47,10 @@ fn controller(color: &Color, red_pin: &mut rppal::gpio::OutputPin, green_pin: &m
     let mut list = color.convert_to_list(); 
     list.sort();
     //list.reverse();
-    let mut final_wait_time = 255;
     
 
     let wait_time = list.get(0).unwrap().intensity;
-    final_wait_time -= wait_time;
-    thread::sleep(time::Duration::from_millis((wait_time as f64*TIME_CONSTANT)as u64)); 
+    thread::sleep(time::Duration::from_micros((wait_time as f64*TIME_CONSTANT)as u64)); 
     match channel_to_enum(list[0].port){
         RGB::RED => red_pin.set_low(),
         RGB::GREEN => green_pin.set_low(),
@@ -49,8 +58,7 @@ fn controller(color: &Color, red_pin: &mut rppal::gpio::OutputPin, green_pin: &m
     }; 
     
     let wait_time = list.get(1).unwrap().intensity - list.get(0).unwrap().intensity;
-    final_wait_time -= wait_time;
-    thread::sleep(time::Duration::from_millis((wait_time as f64*TIME_CONSTANT)as u64)); 
+    thread::sleep(time::Duration::from_micros((wait_time as f64*TIME_CONSTANT)as u64)); 
     match channel_to_enum(list[1].port){
         RGB::RED => red_pin.set_low(),
         RGB::GREEN => green_pin.set_low(),
@@ -58,17 +66,15 @@ fn controller(color: &Color, red_pin: &mut rppal::gpio::OutputPin, green_pin: &m
     }; 
     
     let wait_time = list.get(2).unwrap().intensity - list.get(1).unwrap().intensity - list.get(0).unwrap().intensity;
-    final_wait_time -= wait_time;
-    thread::sleep(time::Duration::from_millis((wait_time as f64*TIME_CONSTANT)as u64)); 
+    thread::sleep(time::Duration::from_micros((wait_time as f64*TIME_CONSTANT)as u64)); 
     
     match channel_to_enum(list[2].port){
         RGB::RED => red_pin.set_low(),
         RGB::GREEN => green_pin.set_low(),
         RGB::BLUE => blue_pin.set_low(),
     }; 
-    let wait_time = final_wait_time;
     let wait_time = 255 - list.get(2).unwrap().intensity - list.get(1).unwrap().intensity - list.get(0).unwrap().intensity;
-    thread::sleep(time::Duration::from_millis((wait_time as f64*TIME_CONSTANT)as u64)); 
+    thread::sleep(time::Duration::from_micros((wait_time as f64*TIME_CONSTANT)as u64)); 
     //
 }
 
