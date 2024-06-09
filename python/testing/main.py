@@ -4,8 +4,9 @@ pygame.init()
 pygame.display.set_caption("CONWAY'S GAME OF LIFE")
 screen = pygame.display.set_mode()
 clock = pygame.time.Clock()
-fps = 200
-delay_speed = 3
+fps = 50
+delay_speed = 2
+
 
 red = 255
 green = 0
@@ -14,21 +15,14 @@ ds = 0
 
 
 run = True
-while run:
-    clock.tick(fps)
-    red_hex = hex(red)[2:]
-    green_hex = hex(green)[2:]
-    blue_hex = hex(blue)[2:]
-    if len(red_hex) ==1:red_hex = "0" + red_hex
-    if len(green_hex) ==1:green_hex = "0" + green_hex
-    if len(blue_hex) ==1:blue_hex = "0" + blue_hex
-    
-    # print("#" + red_hex + green_hex + blue_hex)
-    screen.fill("#" + red_hex + green_hex + blue_hex)
-    pygame.display.update()
-    
-    
 
+
+
+def generate_next_color():
+    global red
+    global green
+    global blue
+    global ds
     # #green coming up
     # if(red==255 and green != 255 and blue == 0):
     #     green += 1
@@ -77,6 +71,24 @@ while run:
     
     if(ds == delay_speed):
         ds = 0
+
+
+while run:
+    clock.tick(fps)
+    red_hex = hex(red)[2:]
+    green_hex = hex(green)[2:]
+    blue_hex = hex(blue)[2:]
+    if len(red_hex) ==1:red_hex = "0" + red_hex
+    if len(green_hex) ==1:green_hex = "0" + green_hex
+    if len(blue_hex) ==1:blue_hex = "0" + blue_hex
+    
+    # print("#" + red_hex + green_hex + blue_hex)
+    screen.fill("#" + red_hex + green_hex + blue_hex)
+    pygame.display.update()
+    
+    generate_next_color()
+    
+
     
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -84,4 +96,3 @@ while run:
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_ESCAPE:
                 run = False
-        
